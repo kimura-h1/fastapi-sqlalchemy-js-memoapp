@@ -20,8 +20,8 @@ async function fetchAndDisplayMemos() {
                 <td>${memo.status.due_date ? memo.status.due_date.split('T')[0] : ''}</td>
                 <td>${memo.status.is_completed ? '完了' : '未完了'}</td>
                 <td>
-                    <button class="edit-btn" data-id="${memo.memo_id}">編集</button>
-                    <button class="delete-btn" data-id="${memo.memo_id}">削除</button>
+                    <button class="edit" data-id="${memo.memo_id}">編集</button>
+                    <button class="delete" data-id="${memo.memo_id}">削除</button>
                 </td>
             `;
             memosTableBody.appendChild(row);
