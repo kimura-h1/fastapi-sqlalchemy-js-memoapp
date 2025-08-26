@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 削除ボタンのクリックイベント（イベントデリゲーション）
     document.querySelector('#memos tbody').addEventListener('click', (e) => {
-        const btn = e.target.closest('button.delete-btn'); // 安全にボタンを取得
+        const btn = e.target.closest('button.delete'); // 安全にボタンを取得
         if (btn) {
             const memoId = btn.dataset.id;
             if (!memoId) {
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 document.querySelector('#memos tbody').addEventListener('click', (e) => {
-  const editBtn = e.target.closest('button.edit-btn');
+  const editBtn = e.target.closest('button.edit');
   if (editBtn) {
     const id = editBtn.dataset.id;
     // 例: edit.html?id=123 に遷移
