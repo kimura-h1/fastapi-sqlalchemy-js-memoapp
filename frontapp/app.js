@@ -18,8 +18,9 @@ async function fetchAndDisplayMemos() {
                 <td>${memo.description}</td>
                 <td>${memo.status.priority}</td>
                 <td>${memo.status.due_date ? memo.status.due_date.split('T')[0] : ''}</td>
-                <td>${memo.status.is_completed ? '完了' : '未完了'}</td>
                 <td>
+                    <input type="checkbox" class="toggle-completed" data-id="${memo.memo_id}" ${memo.status.is_completed ? 'checked' : ''}>
+                </td>
                     <button class="edit" data-id="${memo.memo_id}">編集</button>
                     <button class="delete" data-id="${memo.memo_id}">削除</button>
                 </td>
@@ -89,4 +90,23 @@ document.querySelector('#memos tbody').addEventListener('click', (e) => {
     return;
   }
   // 既存の削除処理はそのまま
+});
+
+// 完了トグル
+document.querySelector('#memos tbody').addEventListener('change', (e) => {
+    const checkbox = e.target.closest('input.toggle-completed');
+    if (checkbox) {
+        const id = checkbox.dataset.id;
+        const newStatus = checkbox.checked;
+        fetch(`${apiUrl}${id}`, {
+            method: 'PATCH',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ is_completed: newStatus })
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data.message);
+        })
+        .catch(err => console.error('完了トグル失敗:', err));
+    }
 });

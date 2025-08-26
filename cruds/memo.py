@@ -120,3 +120,15 @@ async def delete_memo(
         print(">>> データ削除完了")
     
     return memo
+
+async def patch_memo(db: AsyncSession, memo_id: int, patch_data: dict):
+    memo = await db.get(memo_model.Memo, memo_id)
+    if not memo:
+        return None
+
+    for key, value in patch_data.items():
+        setattr(memo, key, value)
+
+    await db.commit()
+    await db.refresh(memo)
+    return memo
