@@ -4,7 +4,7 @@ const apiUrl = 'http://localhost:8000/memos/';
 // メモ一覧取得（キャッシュ回避付き）
 async function fetchAndDisplayMemos() {
     try {
-        const response = await fetch(apiUrl + '?t=' + new Date().getTime(), { cache: 'no-store' });
+         const response = await fetch(apiUrl + '?t=' + new Date().getTime(), { cache: 'no-store' });
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         const memos = await response.json();
