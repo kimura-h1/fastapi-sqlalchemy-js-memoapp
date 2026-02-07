@@ -1,30 +1,47 @@
-# FastAPI + SQLAlchemy + JavaScript メモアプリ
+# FastAPI + SQLAlchemy + メモアプリ
 
 ## 📌 概要
-FastAPI と SQLAlchemy を使ったシンプルなメモ管理アプリです。  
-フロントエンドは HTML + JavaScript で実装し、Live Server で配信します。  
-CORS 設定により、API（FastAPI）とフロント（Live Server）を分離して動作させます。
+FastAPI と SQLAlchemy（SQLite）を使ったシンプルなメモ管理アプリです。  
+バックエンド（API）とフロントエンド（React / 旧HTML+JS）を分離して動作させます。  
+CORS 設定により、別ポートからのアクセスを許可します。
 
 ---
 
 ## 🛠 技術スタック
-- **バックエンド**: FastAPI, SQLAlchemy, SQLite
-- **フロントエンド**: HTML, CSS, JavaScript (Vanilla JS)
-- **実行環境**: Python 3.11+, Node.js (Live Server)
-- **API仕様**: RESTful API
+### バックエンド
+- FastAPI
+- SQLAlchemy（Async）
+- SQLite（`memodb.sqlite`）
+- Pydantic
+
+- ### フロントエンド
+- React（`frontapp-react`）
+
+
+---
+
+## ✅ 事前準備
+- Python 3.11+
+- Node.js / npm（Reactフロントを動かす場合）
 
 ---
 
 ## 🚀 起動方法
 
-### 1. バックエンド (FastAPI)
+### 1) バックエンド（FastAPI）
+
 ```bash
-# 仮想環境の作成・有効化
-python -m venv .venv
-source .venv/bin/activate  # Windowsは .venv\Scripts\activate
+python3 -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
 
-# 必要パッケージのインストール
-pip install fastapi uvicorn sqlalchemy pydantic
+### 2) フロントエンド（React）
+```bash
+npm install
+npm install react-router-dom
+npm start
+```
 
-# サーバー起動
-uvicorn main:app --reload
+
+
