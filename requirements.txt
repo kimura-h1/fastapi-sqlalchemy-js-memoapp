@@ -1,4 +1,4 @@
-aiosqlite==0.21.0
+source .venv/bin/activateaiosqlite==0.21.0
 annotated-types==0.7.0
 anyio==4.10.0
 click==8.2.1
