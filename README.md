@@ -30,7 +30,6 @@ CORS 設定により、別ポートからのアクセスを許可します。
 
 ### 1) バックエンド（FastAPI）
 
-#### ① 仮想環境の作成・有効化
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
