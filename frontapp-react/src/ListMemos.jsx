@@ -17,6 +17,8 @@ function ListMemos() {
         if (!res.ok) throw new Error(`取得失敗 (status: ${res.status})`);
 
         const data = await res.json();
+        console.log("memos:", data);
+
         setMemos(Array.isArray(data) ? data : []);
       } catch (e) {
         setError(e.message || "一覧取得に失敗しました");
@@ -26,8 +28,10 @@ function ListMemos() {
     };
 
     fetchMemos();
+    
   }, []);
 
+  
   if (loading) return <p>読み込み中...</p>;
 
   return (
@@ -40,9 +44,9 @@ function ListMemos() {
 
       <ul>
         {memos.map((m) => (
-          <li key={m.id}>
+          <li key={m.memo_id}>
             <strong>{m.title}</strong>{" "}
-            <Link to={`/memos/${m.id}/edit`}>編集</Link>
+            <Link to={`/memos/${m.memo_id}/edit`}>編集</Link>
           </li>
         ))}
       </ul>

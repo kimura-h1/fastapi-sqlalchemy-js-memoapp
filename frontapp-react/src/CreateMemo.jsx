@@ -1,21 +1,16 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./styles.css";
+import MemoForm from "./components/MemoForm";
 
 function CreateMemo() {
   const navigate = useNavigate();
-
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [priority, setPriority] = useState("低");
-  const [dueDate, setDueDate] = useState("");
-  const [isCompleted, setIsCompleted] = useState(false);
   const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleCreate = async ({ title, description, priority, dueDate, isCompleted }) => {
     try {
       setError("");
+      setSubmitting(true);
 
  const payload = {
   title,
@@ -59,49 +54,14 @@ if (!res.ok) {
       <h1>メモの作成</h1>
       <Link to="/list">一覧へ戻る</Link>
 
-      {error && <p style={{ marginTop: 12 }}>{error}</p>}
 
-      <div className="form-container">
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>タイトル</label>
-            <input value={title} onChange={(e) => setTitle(e.target.value)} required />
-          </div>
-
-          <div>
-            <label>詳細</label>
-            <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-          </div>
-
-          <div>
-            <label>優先度</label>
-            <select value={priority} onChange={(e) => setPriority(e.target.value)}>
-              <option value="低">低</option>
-              <option value="中">中</option>
-              <option value="高">高</option>
-            </select>
-          </div>
-
-          <div>
-            <label>期限日</label>
-            <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
-          </div>
-
-          <div>
-            <label>完了</label>
-            <input
-              type="checkbox"
-              checked={isCompleted}
-              onChange={(e) => setIsCompleted(e.target.checked)}
-            />
-          </div>
-
-          <div className="button-container">
-            <button type="submit">登録</button>
-          </div>
-        </form>
+          <MemoForm
+        submitLabel="登録"
+        onSubmit={handleCreate}
+        submitting={submitting}
+        error={error}
+      />
       </div>
-    </div>
   );
 }
 
