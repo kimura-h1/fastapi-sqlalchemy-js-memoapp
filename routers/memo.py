@@ -41,7 +41,9 @@ async def get_memos_list(db: AsyncSession = Depends(db.get_dbsession)):
             memo_id=memo.memo_id,
             title=memo.title,
             description=memo.description,
-            status=status
+            status=status,
+            created_at=memo.created_at,
+            updated_at=memo.updated_at,
         )
         memos_pydantic.append(memo_pydantic)
     return memos_pydantic
@@ -67,7 +69,9 @@ async def get_memo_detail(memo_id: int,
         memo_id=memo.memo_id,
         title=memo.title,
         description=memo.description,
-        status=status
+        status=status,
+        created_at=memo.created_at,
+        updated_at=memo.updated_at,
     )
     return memo_pydantic
 

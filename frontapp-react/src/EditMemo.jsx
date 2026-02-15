@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import MemoForm from "./components/MemoForm";
+import ErrorBox from "./components/ErrorBox";
 
 function EditMemo() {
   const { id } = useParams();
@@ -96,6 +97,8 @@ function EditMemo() {
         submitting={submitting}
         error={error}
       />
+      
+       <ErrorBox message={error} onClose={() => setError("")} />
     </div>
   );
 }

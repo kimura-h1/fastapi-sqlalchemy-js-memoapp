@@ -2,6 +2,22 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./styles.css";
 
+
+// ★ ここに追加
+function formatDate(value) {
+  if (!value) return "";
+
+  const d = new Date(value);
+
+  return d.toLocaleString("ja-JP", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 function ListMemos() {
   const [memos, setMemos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -47,6 +63,13 @@ function ListMemos() {
           <li key={m.memo_id}>
             <strong>{m.title}</strong>{" "}
             <Link to={`/memos/${m.memo_id}/edit`}>編集</Link>
+
+            <div style={{ fontSize: 12, color: "#666" }}>
+              作成: {formatDate(m.created_at)}
+            </div>
+            <div style={{ fontSize: 12, color: "#666" }}>
+              更新: {formatDate(m.updated_at)}
+            </div>
           </li>
         ))}
       </ul>
