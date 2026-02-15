@@ -34,6 +34,9 @@ class MemoSchema(InsertAndUpdateMemoSchema):
     memo_id: int = Field(...,
             description="メモを一意に識別するID番号。データベースで自動的に割り当てられます。",
             example=123)
+    created_at: datetime
+    
+    updated_at: datetime| None = None
 
 # レスポンスで使用する結果用スキーマ
 class ResponseSchema(BaseModel):

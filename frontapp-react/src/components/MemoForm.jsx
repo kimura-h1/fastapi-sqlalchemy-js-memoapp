@@ -33,15 +33,13 @@ function MemoForm({
 
   return (
     <div className="form-container">
-      {error && <p style={{ marginTop: 12 }}>{error}</p>}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <div>
           <label>タイトル</label>
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            required
           />
         </div>
 
