@@ -2,42 +2,27 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import MemoForm from "./components/MemoForm";
 import ErrorBox from "./components/ErrorBox";
+import { formatApiError } from "./utils/apiError";
+import { validateMemo } from "./utils/validation";
 
-function formatApiError(body) {
-  if (body && typeof body === "object" && Array.isArray(body.detail)) {
-    const messages = body.detail.map((d) => {
-      const field = Array.isArray(d.loc) ? d.loc[d.loc.length - 1] : "";
-      const fieldJa =
-        field === "title" ? "タイトル" :
-        field === "description" ? "詳細" :
-        field || "入力";
 
-      if (d.type === "string_too_short" || d.type === "missing") {
-        return `${fieldJa}は必須です`;
-      }
-      return field ? `${fieldJa}: ${d.msg}` : d.msg;
-    });
-
-    return messages.join("\n");
-  }
-
-  if (typeof body === "string" && body.trim() !== "") return body;
-  return "登録に失敗しました";
-}
 
 function CreateMemo() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const handleCreate = async ({ title, description, priority, dueDate, isCompleted }) => {
+  const handleCreate = async (form) => {
     setError("");
 
-    // ✅ フロント側バリデーション（ここで止める）
-    if (!title || title.trim() === "") {
-      setError("タイトルは必須です");
+    // フロント共通バリデーション
+    const v = validateMemo(form);
+    if (v) {
+      setError(v);
       return;
     }
+
+  const { title, description, priority, dueDate, isCompleted } = form;
 
     try {
       setSubmitting(true);
@@ -71,7 +56,7 @@ function CreateMemo() {
     } catch (e) {
       setError(e?.message || "登録に失敗しました");
     } finally {
-     
+
       setSubmitting(false);
     }
   };

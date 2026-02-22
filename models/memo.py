@@ -2,6 +2,12 @@ from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from db import Base
 from datetime import datetime
 
+from sqlalchemy.orm import Mapped, mapped_column
+
+
+
+
+
 # ==================================================
 # モデル
 # ==================================================
@@ -9,12 +15,15 @@ from datetime import datetime
 class Memo(Base):
     # テーブル名
     __tablename__ = "memos"
+    __table_args__ = {"schema": "app"}
     # メモID：PK：自動インクリメント
     memo_id = Column(Integer, primary_key=True, autoincrement=True)
     # タイトル：未入力不可
     title = Column(String(50), nullable=False)
     # 詳細：未入力可
     description = Column(String(255), nullable=True)
+    # カテゴリ
+    category: Mapped[str | None] = mapped_column(String(50))
     # 作成日時
     created_at = Column(DateTime, default=datetime.now())
     # 更新日時
@@ -27,3 +36,8 @@ class Memo(Base):
     # 完了フラグ
     is_completed = Column(Boolean, default=False)
     # △△△ MemoStatusSchemaのフィールド △△△
+
+
+
+
+    
