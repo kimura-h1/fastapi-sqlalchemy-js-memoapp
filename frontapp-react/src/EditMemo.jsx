@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import MemoForm from "./components/MemoForm";
 import ErrorBox from "./components/ErrorBox";
+import { formatApiError } from "./utils/apiError";
+import { validateMemo } from "./utils/validation";
+
+
 
 function EditMemo() {
   const { id } = useParams();
@@ -47,8 +51,20 @@ function EditMemo() {
     fetchMemo();
   }, [id]);
 
-  // 更新（MemoFormから値を受け取る）
-  const handleUpdate = async ({ title, description, priority, dueDate, isCompleted }) => {
+
+    const handleUpdate = async (form) => {
+    setError("");
+
+    // フロント共通バリデーション
+    const v = validateMemo(form);
+    if (v) {
+      setError(v);
+      return;
+    }
+
+  const { title, description, priority, dueDate, isCompleted } = form;
+
+
     try {
       setSubmitting(true);
       setError("");
@@ -70,9 +86,14 @@ function EditMemo() {
       });
 
       if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body?.detail ?? `更新に失敗しました (status: ${res.status})`);
+        const contentType = res.headers.get("content-type") || "";
+        const body = contentType.includes("application/json")
+          ? await res.json().catch(() => ({}))
+          : await res.text().catch(() => "");
+
+        throw new Error(formatApiError(body));
       }
+
 
       navigate("/list");
     } catch (e) {
@@ -97,7 +118,7 @@ function EditMemo() {
         submitting={submitting}
         error={error}
       />
-      
+
        <ErrorBox message={error} onClose={() => setError("")} />
     </div>
   );

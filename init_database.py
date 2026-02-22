@@ -9,7 +9,8 @@ import asyncio
 # DBファイル作成
 base_dir = os.path.dirname(__file__)
 # データベースのURL
-DATABASE_URL = 'sqlite+aiosqlite:///' + os.path.join(base_dir, 'memodb.sqlite')
+DATABASE_URL = "postgresql+asyncpg://fastapi_user:kh817012@localhost:5432/fastapi_db?options=-csearch_path%3Dapp"
+
 
 # 非同期エンジンの作成
 engine = create_async_engine(DATABASE_URL, echo=True)
