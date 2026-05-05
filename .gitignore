@@ -1,3 +1,30 @@
-.venv/
+# Python
 __pycache__/
+*.pyc
+*.pyo
+
+# 仮想環境
+.venv/
+venv/
+
+# DB
 *.sqlite
+*.db
+
+# Docker
+*.tar
+
+# AWS CLI / ダウンロード物
+aws/
+awscliv2*
+*.zip
+
+# OS
+.DS_Store
+
+# ログ
+*.log
+
+# VSCode
+.vscode/task-definition.json
+trust-policy.json

@@ -44,3 +44,21 @@ class ResponseSchema(BaseModel):
     message: str = Field(...,
         description="API操作の結果を説明するメッセージ。",
         example="メモの更新に成功しました。")
+
+
+
+
+def to_memo_schema(memo) -> MemoSchema:
+    status = MemoStatusSchema(
+    priority=memo.priority,
+    due_date=memo.due_date,
+    is_completed=memo.is_completed,
+)
+    return MemoSchema(
+        memo_id=memo.memo_id,
+        title=memo.title,
+        description=memo.description,
+        status=status,
+        created_at=memo.created_at,
+        updated_at=memo.updated_at,
+)

@@ -38,18 +38,22 @@ async def insert_memo(
     return new_memo
 
 # 全件取得
-async def get_memos(db_session: AsyncSession) -> list[memo_model.Memo]:
-    """
-        データベースから全てのメモを取得する関数
-        Args:
-            db_session (AsyncSession): 非同期DBセッション
-        Returns:
-            list[Memo]: 取得された全てのメモのリスト
-    """
-    print("=== 全件取得：開始 ===")
-    result = await db_session.execute(select(memo_model.Memo))
+# 一覧取得
+async def get_memos(
+    db_session: AsyncSession,
+    skip: int = 0,
+    limit: int = 50
+) -> list[memo_model.Memo]:
+    print("=== 一覧取得：開始 ===")
+
+    result = await db_session.execute(
+        select(memo_model.Memo)
+        .offset(skip)
+        .limit(limit)
+    )
+
     memos = result.scalars().all()
-    print(">>> データ全件取得完了")
+    print(">>> データ一覧取得完了")
     return memos
 
 # 1件取得

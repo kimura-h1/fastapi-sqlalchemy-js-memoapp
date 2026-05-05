@@ -12,7 +12,7 @@ Base = declarative_base()
 # DBファイル作成
 base_dir = os.path.dirname(__file__)
 # データベースのURL
-DATABASE_URL = "postgresql+asyncpg://fastapi_user:kh817012@localhost:5432/fastapi_db"
+DATABASE_URL = "postgresql+asyncpg://fastapi_user:kh817012@host.docker.internal:5432/fastapi_db"
 
 # 非同期エンジンの作成
 engine = create_async_engine(DATABASE_URL, echo=True)

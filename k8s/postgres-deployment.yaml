@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          env:
+            - name: DATABASE_URL
+              value: postgresql+asyncpg://fastapi_user:kh817012@db:5432/fastapi_db
+            - name: POSTGRES_PASSWORD
+              value: kh817012
+            - name: POSTGRES_DB
+              value: fastapi_db
