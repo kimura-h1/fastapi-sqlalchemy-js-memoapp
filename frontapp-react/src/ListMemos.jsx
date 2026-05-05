@@ -29,7 +29,7 @@ function ListMemos() {
         setLoading(true);
         setError("");
 
-        const res = await fetch("http://localhost:8000/memos");
+        const res = await fetch("http://localhost:30007/memos/");
         if (!res.ok) throw new Error(`取得失敗 (status: ${res.status})`);
 
         const data = await res.json();

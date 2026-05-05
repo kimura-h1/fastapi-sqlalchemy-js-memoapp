@@ -25,7 +25,7 @@ function EditMemo() {
         setLoading(true);
         setError("");
         
-        const res = await fetch(`http://localhost:8000/memos/${id}`);
+        const res = await fetch(`http://localhost:30007/memos/${id}`);
         if (!res.ok) throw new Error(`取得に失敗しました (status: ${res.status})`);
 
         const data = await res.json();
@@ -79,7 +79,7 @@ function EditMemo() {
         },
       };
 
-        const res = await fetch(`http://localhost:8000/memos/${id}`, {
+        const res = await fetch(`http://localhost:30007/memos/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

@@ -1,0 +1,8 @@
+Method,Path,API名(Summary),operationId,Tags,Parameters,ResponseCodes
+GET,/,Root,root__get,,,200
+GET,/memos/,Get Memos List,get_memos_list_memos__get,Memos,,200
+POST,/memos/,Create Memo,create_memo_memos__post,Memos,,"200,422"
+DELETE,/memos/{memo_id},Remove Memo,remove_memo_memos__memo_id__delete,Memos,path:memo_id(required),"200,422"
+GET,/memos/{memo_id},Get Memo Detail,get_memo_detail_memos__memo_id__get,Memos,path:memo_id(required),"200,422"
+PATCH,/memos/{memo_id},Toggle Memo Completed,toggle_memo_completed_memos__memo_id__patch,Memos,path:memo_id(required),"200,422"
+PUT,/memos/{memo_id},Modify Memo,modify_memo_memos__memo_id__put,Memos,path:memo_id(required),"200,422"

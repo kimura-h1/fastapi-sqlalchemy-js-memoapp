@@ -1,4 +1,4 @@
-source .venv/bin/activateaiosqlite==0.21.0
+aiosqlite==0.21.0
 annotated-types==0.7.0
 anyio==4.10.0
 click==8.2.1
@@ -14,3 +14,4 @@ starlette==0.47.2
 typing-inspection==0.4.1
 typing_extensions==4.14.1
 uvicorn==0.35.0
+asyncpg
