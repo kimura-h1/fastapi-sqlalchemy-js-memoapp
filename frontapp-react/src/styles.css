@@ -98,33 +98,28 @@ body {
   background-color: #eff6ff;
 }
 
-.btn-icon {
-  background: transparent;
-  border: none;
-  color: #6b7280;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 13px;
-  transition: background-color 0.15s;
+.btn-outline-primary {
+  background-color: transparent;
+  color: #2563eb;
+  border: 1px solid #2563eb;
 }
-.btn-icon:hover {
-  background-color: #f3f4f6;
-  color: #374151;
+.btn-outline-primary:hover {
+  background-color: #eff6ff;
 }
 
-.btn-danger-icon {
-  background: transparent;
-  border: none;
-  color: #dc2626;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 13px;
-  transition: background-color 0.15s;
+.btn-danger {
+  background-color: #dc2626;
+  color: #ffffff;
+  border: 1px solid #dc2626;
 }
-.btn-danger-icon:hover {
-  background-color: #fef2f2;
+.btn-danger:hover {
+  opacity: 0.88;
+}
+
+/* サイズ修飾子 */
+.btn-sm {
+  font-size: 12px;
+  padding: 5px 12px;
 }
 
 .btn:disabled {

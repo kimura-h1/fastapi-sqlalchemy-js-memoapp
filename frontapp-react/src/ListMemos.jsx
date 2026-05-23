@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./styles.css";
 import { BASE_URL } from "./utils/api";
 
@@ -23,6 +23,7 @@ function priorityBadge(priority) {
 }
 
 function ListMemos() {
+  const navigate = useNavigate();
   const [memos, setMemos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -118,11 +119,14 @@ function ListMemos() {
                       {createdAt && <span>作成: {createdAt}</span>}
                     </div>
                     <div className="memo-actions">
-                      <Link to={`/memos/${m.memo_id}/edit`} className="btn-icon">
-                        編集
-                      </Link>
                       <button
-                        className="btn-danger-icon"
+                        className="btn btn-sm btn-outline-primary"
+                        onClick={() => navigate(`/memos/${m.memo_id}/edit`)}
+                      >
+                        編集
+                      </button>
+                      <button
+                        className="btn btn-sm btn-danger"
                         onClick={() => handleDelete(m.memo_id)}
                       >
                         削除
