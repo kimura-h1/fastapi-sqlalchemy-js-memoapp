@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./styles.css";
-import { BASE_URL } from "./utils/api";
+import { BASE_URL, authFetch } from "./utils/api";
+import Header from "./components/Header";
 
 function formatDate(value) {
   if (!value) return null;
@@ -34,7 +35,7 @@ function ListMemos() {
       try {
         setLoading(true);
         setError("");
-        const res = await fetch(`${BASE_URL}/memos/`);
+        const res = await authFetch(`${BASE_URL}/memos/`);
         if (!res.ok) throw new Error(`取得失敗 (status: ${res.status})`);
         const data = await res.json();
         setMemos(Array.isArray(data) ? data : []);
@@ -50,7 +51,7 @@ function ListMemos() {
   const handleDelete = async (id) => {
     if (!window.confirm("本当に削除しますか？")) return;
     try {
-      const res = await fetch(`${BASE_URL}/memos/${id}`, { method: "DELETE" });
+      const res = await authFetch(`${BASE_URL}/memos/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error(`削除失敗 (status: ${res.status})`);
       setMemos((prev) => prev.filter((m) => m.memo_id !== id));
       setSuccessMsg("メモを削除しました");
@@ -62,16 +63,14 @@ function ListMemos() {
 
   if (loading) return (
     <>
-      <header className="app-header"><h1>メモアプリ</h1></header>
+      <Header />
       <div className="page"><p>読み込み中...</p></div>
     </>
   );
 
   return (
     <>
-      <header className="app-header">
-        <h1>メモアプリ</h1>
-      </header>
+      <Header />
 
       <main className="page">
         <div className="page-header">
