@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import MemoForm from "./components/MemoForm";
 import ErrorBox from "./components/ErrorBox";
+import Header from "./components/Header";
 import { formatApiError } from "./utils/apiError";
 import { validateMemo } from "./utils/validation";
-import { BASE_URL } from "./utils/api";
+import { BASE_URL, authFetch } from "./utils/api";
 
 function EditMemo() {
   const { id } = useParams();
@@ -20,7 +21,7 @@ function EditMemo() {
       try {
         setLoading(true);
         setError("");
-        const res = await fetch(`${BASE_URL}/memos/${id}`);
+        const res = await authFetch(`${BASE_URL}/memos/${id}`);
         if (!res.ok) throw new Error(`取得に失敗しました (status: ${res.status})`);
 
         const data = await res.json();
@@ -65,7 +66,7 @@ function EditMemo() {
         },
       };
 
-      const res = await fetch(`${BASE_URL}/memos/${id}`, {
+      const res = await authFetch(`${BASE_URL}/memos/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -89,23 +90,21 @@ function EditMemo() {
 
   if (loading) return (
     <>
-      <header className="app-header"><h1>メモアプリ</h1></header>
+      <Header />
       <div className="page"><p>読み込み中...</p></div>
     </>
   );
 
   if (!initialValues) return (
     <>
-      <header className="app-header"><h1>メモアプリ</h1></header>
+      <Header />
       <div className="page"><p>データが取得できませんでした</p></div>
     </>
   );
 
   return (
     <>
-      <header className="app-header">
-        <h1>メモアプリ</h1>
-      </header>
+      <Header />
 
       <main className="page">
         <div className="page-header">
