@@ -12,7 +12,6 @@ function MemoForm({
   submitLabel = "登録",
   onSubmit,
   submitting = false,
-  error = "",
 }) {
   const [title, setTitle] = useState(initialValues.title);
   const [description, setDescription] = useState(initialValues.description);
@@ -22,64 +21,81 @@ function MemoForm({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await onSubmit({
-      title,
-      description,
-      priority,
-      dueDate,
-      isCompleted,
-    });
+    await onSubmit({ title, description, priority, dueDate, isCompleted });
   };
 
   return (
-    <div className="form-container">
-
+    <div className="form-card">
       <form onSubmit={handleSubmit} noValidate>
-        <div>
-          <label>タイトル</label>
+        <div className="form-group">
+          <label className="form-label" htmlFor="title">
+            タイトル <span className="required">*</span>
+          </label>
           <input
+            id="title"
+            className="form-input"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            placeholder="メモのタイトルを入力"
+            maxLength={50}
           />
         </div>
 
-        <div>
-          <label>詳細</label>
+        <div className="form-group">
+          <label className="form-label" htmlFor="description">詳細</label>
           <textarea
+            id="description"
+            className="form-textarea"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            placeholder="詳細を入力（任意）"
+            maxLength={255}
           />
         </div>
 
-        <div>
-          <label>優先度</label>
-          <select value={priority} onChange={(e) => setPriority(e.target.value)}>
+        <div className="form-group">
+          <label className="form-label" htmlFor="priority">優先度</label>
+          <select
+            id="priority"
+            className="form-select"
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+          >
             <option value="低">低</option>
             <option value="中">中</option>
             <option value="高">高</option>
           </select>
         </div>
 
-        <div>
-          <label>期限日</label>
+        <div className="form-group">
+          <label className="form-label" htmlFor="dueDate">期限日</label>
           <input
+            id="dueDate"
+            className="form-input"
             type="date"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
           />
         </div>
 
-        <div>
-          <label>完了</label>
-          <input
-            type="checkbox"
-            checked={isCompleted}
-            onChange={(e) => setIsCompleted(e.target.checked)}
-          />
+        <div className="form-group">
+          <label className="form-label">完了</label>
+          <div className="form-checkbox-group">
+            <input
+              id="isCompleted"
+              className="form-checkbox"
+              type="checkbox"
+              checked={isCompleted}
+              onChange={(e) => setIsCompleted(e.target.checked)}
+            />
+            <label htmlFor="isCompleted" style={{ fontWeight: "normal", cursor: "pointer" }}>
+              このメモを完了済みにする
+            </label>
+          </div>
         </div>
 
-        <div className="button-container">
-          <button type="submit" disabled={submitting}>
+        <div className="form-actions">
+          <button type="submit" className="btn btn-success" disabled={submitting}>
             {submitting ? "送信中..." : submitLabel}
           </button>
         </div>

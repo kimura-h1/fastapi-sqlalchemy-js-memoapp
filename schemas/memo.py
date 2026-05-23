@@ -16,17 +16,17 @@ class MemoStatusSchema(BaseModel):
 
 # 登録・更新で使用するスキーマ
 class InsertAndUpdateMemoSchema(BaseModel):
-    
+
     title: str = Field(...,
             description="メモのタイトルを入力してください。少なくとも1文字以上必要です。",
-            example="明日のアジェンダ", min_length=1)
-    
+            example="明日のアジェンダ", min_length=1, max_length=50)
+
     description: str = Field(default="",
             description="メモの内容についての追加情報。任意で記入できます。",
-            example="会議で話すトピック：プロジェクトの進捗状況")
-    
+            example="会議で話すトピック：プロジェクトの進捗状況", max_length=255)
+
     status: MemoStatusSchema = Field(..., description="メモの状態を表す情報")
-   
+
 
 # メモ情報を表すスキーマ
 class MemoSchema(InsertAndUpdateMemoSchema):
@@ -46,6 +46,10 @@ class ResponseSchema(BaseModel):
         example="メモの更新に成功しました。")
 
 
+
+
+class PatchMemoSchema(BaseModel):
+    is_completed: bool
 
 
 def to_memo_schema(memo) -> MemoSchema:

@@ -25,7 +25,7 @@ class Memo(Base):
     # カテゴリ
     category: Mapped[str | None] = mapped_column(String(50))
     # 作成日時
-    created_at = Column(DateTime, default=datetime.now())
+    created_at = Column(DateTime, default=datetime.now)
     # 更新日時
     updated_at = Column(DateTime)
     # ▽▽▽ MemoStatusSchemaのフィールド ▽▽▽
