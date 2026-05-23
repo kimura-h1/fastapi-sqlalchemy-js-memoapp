@@ -3,34 +3,25 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy import text
 
-# ==================================================
-# DBアクセス
-# ==================================================
-# ベースクラスの定義
 Base = declarative_base()
 
-# DBファイル作成
-base_dir = os.path.dirname(__file__)
-# データベースのURL
-DATABASE_URL = "postgresql+asyncpg://fastapi_user:kh817012@host.docker.internal:5432/fastapi_db"
+DATABASE_URL = os.environ.get("DATABASE_URL")
+if not DATABASE_URL:
+    raise RuntimeError(
+        "DATABASE_URL が設定されていません。"
+        ".env.example を参考に .env ファイルを作成してください。"
+    )
 
-# 非同期エンジンの作成
-engine = create_async_engine(DATABASE_URL, echo=True)
+engine = create_async_engine(DATABASE_URL, echo=False)
 
-# 非同期セッションの設定
 async_session = sessionmaker(
     engine,
     expire_on_commit=False,
-    class_=AsyncSession
+    class_=AsyncSession,
 )
 
-# DBとのセッションを非同期的に扱うことができる関数
+
 async def get_dbsession():
     async with async_session() as session:
         await session.execute(text("SET search_path TO app"))
-
-        r = await session.execute(
-            text("SELECT current_database(), current_user, current_schema()")
-        )
-        print("DB_CHECK:", r.first())  # ★追加
         yield session

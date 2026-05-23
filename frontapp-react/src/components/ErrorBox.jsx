@@ -1,4 +1,6 @@
 export default function ErrorBox({ message, onClose }) {
+  if (!message) return null;
+
   return (
     <div
       style={{
@@ -7,28 +9,17 @@ export default function ErrorBox({ message, onClose }) {
         bottom: 16,
         width: "min(520px, calc(100vw - 32px))",
         minHeight: "60px",
-
         backgroundColor: "white",
         border: "1px solid #ddd",
         borderLeft: "6px solid red",
         borderRadius: 8,
         padding: "12px 14px",
-
         boxShadow: "0 6px 18px rgba(0,0,0,0.18)",
         zIndex: 99999,
       }}
     >
-      {message ? (
-        <div style={{ color: "red", whiteSpace: "pre-wrap" }}>
-          {message}
-        </div>
-      ) : (
-        <div style={{ color: "#aaa" }}>
-          エラーメッセージはここに表示されます
-        </div>
-      )}
-
-      {message && onClose && (
+      <div style={{ color: "red", whiteSpace: "pre-wrap" }}>{message}</div>
+      {onClose && (
         <button
           onClick={onClose}
           style={{

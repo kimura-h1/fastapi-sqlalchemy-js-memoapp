@@ -1,162 +1,356 @@
-/* ベース設定: 全体に適用されるスタイル */
+/* ===== リセット・ベース ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-    /* 使用するフォントファミリー */
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    /* 中央揃えにするためのマージン */
-    margin: 0 auto;
-    /* 全体のコンテンツの最大幅 */
-    max-width: 800px;
-    /* 全体のパディング */
-    padding: 20px;
-    /* 背景色 */
-    background-color: #f4f4f4;
+  font-family: "Segoe UI", "Hiragino Sans", "Meiryo", sans-serif;
+  background-color: #f0f2f5;
+  color: #1a1a2e;
+  min-height: 100vh;
 }
 
-/* 見出しのスタイル */
-h1, h2 {
-    /* 見出しのテキスト色 */
-    color: #2c3e50;
+/* ===== ヘッダー ===== */
+.app-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-/* フォームコンテナのスタイル */
-.form-container {
-    /* 背景色 */
-    background-color: #ffffff;
-    /* 境界線 */
-    border: 1px solid #dddddd;
-    /* 下マージン */
-    margin-bottom: 20px;
-    /* 内部パディング */
-    padding: 20px;
-    /* 影 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* 角の丸み */
-    border-radius: 5px;
+.app-header h1 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2563eb;
+  margin: 0;
 }
 
-/* ラベルのスタイル */
-label {
-    /* ブロック要素として表示 */
-    display: block;
-    /* 下マージン */
-    margin-bottom: 5px;
-    /* 太字 */
-    font-weight: bold;
+/* ===== ページコンテンツ ===== */
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 20px;
 }
 
-/* 入力項目のスタイル */
-input[type="text"], textarea {
-    /* 境界線 */
-    border: 1px solid #cccccc;
-    /* 下マージン */
-    margin-bottom: 20px;
-    /* 内部パディング */
-    padding: 10px;
-    /* 全幅から境界線とパディングを差し引いた幅 */
-    width: calc(100% - 22px);
-    /* 角の丸み */
-    border-radius: 3px;
-    /* 内側に影 */
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
 }
 
-/* =====【テーブル】===== */
-/* テーブルのスタイル */
-table {
-    /* セルの境界線を一つに */
-    border-collapse: collapse;
-    /* 幅 */
-    width: 100%;
-    /* 背景色 */
-    background-color: #ffffff;
-    /* 影 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* 角の丸み */
-    border-radius: 5px;
-    /* 内部の要素がはみ出さないように */
-    overflow: hidden;
-}
-/* テーブルヘッダーとセルのスタイル */
-th, td {
-    /* 境界線 */
-    border: 1px solid #dddddd;
-    /* パディング */
-    padding: 10px;
-    /* テキストの配置 */
-    text-align: left;
-}
-/* テーブルヘッダーのスタイル */
-th {
-    /* 背景色 */
-    background-color: #3498db;
-    /* テキスト色 */
-    color: white;
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a2e;
 }
 
-/* =====【ボタン】===== */
-/* ボタンのスタイル */
-button {
-    /* 背景色 */
-    background-color: #3498db;
-    /* 境界線なし */
-    border: none;
-    /* テキスト色 */
-    color: white;
-    /* ホバー時のカーソル */
-    cursor: pointer;
-    /* パディング */
-    padding: 10px 15px;
-    /* 右マージン */
-    margin-right: 10px;
-    /* 角の丸み */
-    border-radius: 3px;
-    /* 背景色変更のアニメーション */
-    transition: background-color 0.3s ease;
-}
-button:hover {
-    /* ホバー時の背景色 */
-    background-color: #055b93;
+/* ===== ボタン ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  transition: opacity 0.15s, transform 0.1s;
+  text-decoration: none;
+  line-height: 1;
 }
 
-/* 更新実行ボタンのスタイル */
-#updateButton {
-    /* 背景色 */
-    background-color: rgb(12, 185, 12);
-}
-#updateButton:hover {
-    /* ホバー時の背景色 */
-    background-color: #218838;
+.btn:active {
+  transform: scale(0.97);
 }
 
-/* 編集ボタンのスタイル */
-.edit {
-    /* 背景色 */
-    background-color: #f7c705cf;
+.btn-primary {
+  background-color: #2563eb;
+  color: #ffffff;
 }
-.edit:hover {
-    /* ホバー時の背景色 */
-    background-color: #b79407df;
+.btn-primary:hover {
+  opacity: 0.88;
 }
 
-/* 削除ボタンのスタイル */
-.delete {
-    /* 背景色 */
-    background-color: #e8210b;
+.btn-success {
+  background-color: #16a34a;
+  color: #ffffff;
 }
-.delete:hover {
-    /* ホバー時の背景色 */
-    background-color: #a53005df;
+.btn-success:hover {
+  opacity: 0.88;
 }
 
-/* 編集・削除ボタンのスタイル */
-.edit, .delete {
-    /* パディング */
-    padding: 5px 10px;
-    /* テキスト色 */
-    color: white;
-    /* テキストの下線を消す */
-    text-decoration: none;
-    /* 角の丸み */
-    border-radius: 3px;
+.btn-ghost {
+  background-color: transparent;
+  color: #2563eb;
+  border: 1px solid #2563eb;
+}
+.btn-ghost:hover {
+  background-color: #eff6ff;
 }
 
+.btn-icon {
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  transition: background-color 0.15s;
+}
+.btn-icon:hover {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.btn-danger-icon {
+  background: transparent;
+  border: none;
+  color: #dc2626;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  transition: background-color 0.15s;
+}
+.btn-danger-icon:hover {
+  background-color: #fef2f2;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ===== メモカード ===== */
+.memo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+}
+
+.memo-card {
+  background-color: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.2s;
+}
+
+.memo-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.memo-card.completed {
+  opacity: 0.6;
+  background-color: #f9fafb;
+}
+
+.memo-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.memo-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a2e;
+  word-break: break-word;
+}
+
+.memo-card.completed .memo-title {
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+
+.memo-badges {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.memo-description {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 12px;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.memo-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.memo-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.memo-actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+/* ===== バッジ ===== */
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+.badge-high {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.badge-mid {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.badge-low {
+  background-color: #d1fae5;
+  color: #059669;
+}
+
+.badge-done {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+.badge-pending {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+/* ===== フォーム ===== */
+.form-card {
+  background-color: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.form-label .required {
+  color: #dc2626;
+  margin-left: 2px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #1a1a2e;
+  background-color: #ffffff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+  font-family: inherit;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #2563eb;
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* ===== 空状態 ===== */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #9ca3af;
+}
+
+.empty-state p {
+  font-size: 15px;
+  margin-bottom: 16px;
+}
+
+/* ===== アラート ===== */
+.alert-success {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.alert-error {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}

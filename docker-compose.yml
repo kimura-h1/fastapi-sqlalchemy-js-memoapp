@@ -20,3 +20,11 @@ services:
       - db
     environment:
       DATABASE_URL: postgresql+asyncpg://fastapi_user:kh817012@db:5432/fastapi_db
+  frontend:
+    build:
+      context: ./frontapp-react
+    container_name: react
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
