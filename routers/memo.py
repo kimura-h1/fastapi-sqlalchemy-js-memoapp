@@ -26,10 +26,17 @@ async def create_memo(
 async def get_memos_list(
     skip: int = 0,
     limit: int = 50,
+    search: str | None = None,
+    priority: str | None = None,
+    is_completed: bool | None = None,
     session: AsyncSession = Depends(db.get_dbsession),
     current_user: user_model.User = Depends(get_current_user),
 ):
-    memos = await memo_crud.get_memos(session, current_user.user_id, skip=skip, limit=limit)
+    memos = await memo_crud.get_memos(
+        session, current_user.user_id,
+        skip=skip, limit=limit,
+        search=search, priority=priority, is_completed=is_completed,
+    )
     return [to_memo_schema(memo) for memo in memos]
 
 
