@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./styles.css";
 import { BASE_URL, authFetch } from "./utils/api";
@@ -23,6 +23,15 @@ function priorityBadge(priority) {
   return map[priority] ?? "badge badge-low";
 }
 
+function buildQuery(search, priority, isCompleted) {
+  const params = new URLSearchParams();
+  if (search) params.set("search", search);
+  if (priority) params.set("priority", priority);
+  if (isCompleted !== "") params.set("is_completed", isCompleted);
+  const qs = params.toString();
+  return qs ? `?${qs}` : "";
+}
+
 function ListMemos() {
   const navigate = useNavigate();
   const [memos, setMemos] = useState([]);
@@ -30,23 +39,35 @@ function ListMemos() {
   const [error, setError] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
 
-  useEffect(() => {
-    const fetchMemos = async () => {
-      try {
-        setLoading(true);
-        setError("");
-        const res = await authFetch(`${BASE_URL}/memos/`);
-        if (!res.ok) throw new Error(`取得失敗 (status: ${res.status})`);
-        const data = await res.json();
-        setMemos(Array.isArray(data) ? data : []);
-      } catch (e) {
-        setError(e.message || "一覧取得に失敗しました");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchMemos();
+  const [searchInput, setSearchInput] = useState("");
+  const [search, setSearch] = useState("");
+  const [priority, setPriority] = useState("");
+  const [isCompleted, setIsCompleted] = useState("");
+
+  const fetchMemos = useCallback(async (s, p, c) => {
+    try {
+      setLoading(true);
+      setError("");
+      const qs = buildQuery(s, p, c);
+      const res = await authFetch(`${BASE_URL}/memos/${qs}`);
+      if (!res.ok) throw new Error(`取得失敗 (status: ${res.status})`);
+      const data = await res.json();
+      setMemos(Array.isArray(data) ? data : []);
+    } catch (e) {
+      setError(e.message || "一覧取得に失敗しました");
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchMemos(search, priority, isCompleted);
+  }, [search, priority, isCompleted, fetchMemos]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setSearch(searchInput), 300);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
   const handleDelete = async (id) => {
     if (!window.confirm("本当に削除しますか？")) return;
@@ -61,12 +82,7 @@ function ListMemos() {
     }
   };
 
-  if (loading) return (
-    <>
-      <Header />
-      <div className="page"><p>読み込み中...</p></div>
-    </>
-  );
+  const hasFilter = searchInput || priority || isCompleted !== "";
 
   return (
     <>
@@ -78,32 +94,82 @@ function ListMemos() {
           <Link to="/create" className="btn btn-primary">+ 新規作成</Link>
         </div>
 
+        <div className="filter-bar">
+          <input
+            className="form-input filter-search"
+            type="text"
+            placeholder="タイトルで検索..."
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
+          <select
+            className="form-select filter-select"
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+          >
+            <option value="">優先度: 全て</option>
+            <option value="高">高</option>
+            <option value="中">中</option>
+            <option value="低">低</option>
+          </select>
+          <select
+            className="form-select filter-select"
+            value={isCompleted}
+            onChange={(e) => setIsCompleted(e.target.value)}
+          >
+            <option value="">状態: 全て</option>
+            <option value="false">未完</option>
+            <option value="true">完了</option>
+          </select>
+          {hasFilter && (
+            <button
+              className="btn btn-ghost btn-sm"
+              onClick={() => {
+                setSearchInput("");
+                setSearch("");
+                setPriority("");
+                setIsCompleted("");
+              }}
+            >
+              リセット
+            </button>
+          )}
+        </div>
+
         {error && <div className="alert-error">{error}</div>}
         {successMsg && <div className="alert-success">{successMsg}</div>}
 
-        {memos.length === 0 ? (
+        {loading ? (
+          <p style={{ color: "#9ca3af", padding: "20px 0" }}>読み込み中...</p>
+        ) : memos.length === 0 ? (
           <div className="empty-state">
-            <p>まだメモがありません</p>
-            <Link to="/create" className="btn btn-primary">最初のメモを作成する</Link>
+            {hasFilter ? (
+              <p>条件に一致するメモがありません</p>
+            ) : (
+              <>
+                <p>まだメモがありません</p>
+                <Link to="/create" className="btn btn-primary">最初のメモを作成する</Link>
+              </>
+            )}
           </div>
         ) : (
           <ul className="memo-list">
             {memos.map((m) => {
               const status = m.status ?? {};
-              const isCompleted = Boolean(status.is_completed);
+              const completed = Boolean(status.is_completed);
               const dueDate = status.due_date ? formatDate(status.due_date) : null;
               const createdAt = formatDate(m.created_at);
 
               return (
-                <li key={m.memo_id} className={`memo-card${isCompleted ? " completed" : ""}`}>
+                <li key={m.memo_id} className={`memo-card${completed ? " completed" : ""}`}>
                   <div className="memo-card-top">
                     <span className="memo-title">{m.title}</span>
                     <div className="memo-badges">
                       <span className={priorityBadge(status.priority)}>
                         {status.priority ?? "-"}
                       </span>
-                      <span className={isCompleted ? "badge badge-done" : "badge badge-pending"}>
-                        {isCompleted ? "完了" : "未完"}
+                      <span className={completed ? "badge badge-done" : "badge badge-pending"}>
+                        {completed ? "完了" : "未完"}
                       </span>
                     </div>
                   </div>

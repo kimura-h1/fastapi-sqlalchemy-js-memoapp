@@ -28,13 +28,21 @@ async def get_memos(
     user_id: int,
     skip: int = 0,
     limit: int = 50,
+    search: str | None = None,
+    priority: str | None = None,
+    is_completed: bool | None = None,
 ) -> list[memo_model.Memo]:
-    result = await session.execute(
+    query = (
         select(memo_model.Memo)
         .where(memo_model.Memo.user_id == user_id)
-        .offset(skip)
-        .limit(limit)
     )
+    if search:
+        query = query.where(memo_model.Memo.title.ilike(f"%{search}%"))
+    if priority:
+        query = query.where(memo_model.Memo.priority == priority)
+    if is_completed is not None:
+        query = query.where(memo_model.Memo.is_completed == is_completed)
+    result = await session.execute(query.offset(skip).limit(limit))
     return result.scalars().all()
 
 
