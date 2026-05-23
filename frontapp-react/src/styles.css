@@ -129,6 +129,25 @@ body {
   transform: none;
 }
 
+/* ===== フィルターバー ===== */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.filter-search {
+  flex: 1;
+  min-width: 180px;
+}
+
+.filter-select {
+  width: auto;
+  min-width: 120px;
+}
+
 /* ===== メモカード ===== */
 .memo-list {
   display: flex;
