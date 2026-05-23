@@ -4,8 +4,7 @@ import MemoForm from "./components/MemoForm";
 import ErrorBox from "./components/ErrorBox";
 import { formatApiError } from "./utils/apiError";
 import { validateMemo } from "./utils/validation";
-
-
+import { BASE_URL } from "./utils/api";
 
 function EditMemo() {
   const { id } = useParams();
@@ -14,30 +13,23 @@ function EditMemo() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
-
-  // MemoFormに渡す初期値
   const [initialValues, setInitialValues] = useState(null);
 
-  // 既存メモの読み込み
   useEffect(() => {
     const fetchMemo = async () => {
       try {
         setLoading(true);
         setError("");
-        
-        const res = await fetch(`http://localhost:30007/memos/${id}`);
+        const res = await fetch(`${BASE_URL}/memos/${id}`);
         if (!res.ok) throw new Error(`取得に失敗しました (status: ${res.status})`);
 
         const data = await res.json();
-
-        // あなたのFastAPIスキーマは status の中に priority/due_date/is_completed がある前提
         const status = data.status ?? {};
 
         setInitialValues({
           title: data.title ?? "",
           description: data.description ?? "",
           priority: status.priority ?? "低",
-          // date inputは YYYY-MM-DD が必要なので 10文字に切る
           dueDate: status.due_date ? String(status.due_date).slice(0, 10) : "",
           isCompleted: Boolean(status.is_completed ?? false),
         });
@@ -47,28 +39,22 @@ function EditMemo() {
         setLoading(false);
       }
     };
-
     fetchMemo();
   }, [id]);
 
-
-    const handleUpdate = async (form) => {
+  const handleUpdate = async (form) => {
     setError("");
 
-    // フロント共通バリデーション
-    const v = validateMemo(form);
-    if (v) {
-      setError(v);
+    const validationError = validateMemo(form);
+    if (validationError) {
+      setError(validationError);
       return;
     }
 
-  const { title, description, priority, dueDate, isCompleted } = form;
-
+    const { title, description, priority, dueDate, isCompleted } = form;
 
     try {
       setSubmitting(true);
-      setError("");
-
       const payload = {
         title,
         description,
@@ -79,7 +65,7 @@ function EditMemo() {
         },
       };
 
-        const res = await fetch(`http://localhost:30007/memos/${id}`, {
+      const res = await fetch(`${BASE_URL}/memos/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -90,10 +76,8 @@ function EditMemo() {
         const body = contentType.includes("application/json")
           ? await res.json().catch(() => ({}))
           : await res.text().catch(() => "");
-
         throw new Error(formatApiError(body));
       }
-
 
       navigate("/list");
     } catch (e) {
@@ -103,24 +87,42 @@ function EditMemo() {
     }
   };
 
-  if (loading) return <p>読み込み中...</p>;
-  if (!initialValues) return <p>データが取得できませんでした</p>;
+  if (loading) return (
+    <>
+      <header className="app-header"><h1>メモアプリ</h1></header>
+      <div className="page"><p>読み込み中...</p></div>
+    </>
+  );
+
+  if (!initialValues) return (
+    <>
+      <header className="app-header"><h1>メモアプリ</h1></header>
+      <div className="page"><p>データが取得できませんでした</p></div>
+    </>
+  );
 
   return (
-    <div>
-     <h1>メモ編集</h1>
-      <Link to="/list">一覧へ戻る</Link>
+    <>
+      <header className="app-header">
+        <h1>メモアプリ</h1>
+      </header>
 
-      <MemoForm
-        initialValues={initialValues}
-        submitLabel="更新"
-        onSubmit={handleUpdate}
-        submitting={submitting}
-        error={error}
-      />
+      <main className="page">
+        <div className="page-header">
+          <h2 className="page-title">メモの編集</h2>
+          <Link to="/list" className="btn btn-ghost">← 一覧へ戻る</Link>
+        </div>
 
-       <ErrorBox message={error} onClose={() => setError("")} />
-    </div>
+        <MemoForm
+          initialValues={initialValues}
+          submitLabel="更新する"
+          onSubmit={handleUpdate}
+          submitting={submitting}
+        />
+
+        <ErrorBox message={error} onClose={() => setError("")} />
+      </main>
+    </>
   );
 }
 
