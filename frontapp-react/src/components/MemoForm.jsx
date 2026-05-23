@@ -95,7 +95,7 @@ function MemoForm({
         </div>
 
         <div className="form-actions">
-          <button type="submit" className="btn btn-success" disabled={submitting}>
+          <button type="submit" className="btn btn-primary" disabled={submitting}>
             {submitting ? "送信中..." : submitLabel}
           </button>
         </div>
