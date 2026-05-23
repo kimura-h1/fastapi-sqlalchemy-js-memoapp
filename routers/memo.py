@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from schemas.memo import InsertAndUpdateMemoSchema, MemoSchema, ResponseSchema, MemoStatusSchema, to_memo_schema
+from schemas.memo import InsertAndUpdateMemoSchema, MemoSchema, ResponseSchema, MemoStatusSchema, PatchMemoSchema, to_memo_schema
 import cruds.memo as memo_crud
 import db
 
@@ -69,14 +69,10 @@ async def remove_memo(memo_id: int,
 @router.patch("/{memo_id}", response_model=ResponseSchema)
 async def toggle_memo_completed(
     memo_id: int,
-    body: dict,  # {"is_completed": true/false} を受け取る
+    body: PatchMemoSchema,
     db: AsyncSession = Depends(db.get_dbsession)
 ):
-    is_completed = body.get("is_completed")
-    if is_completed is None:
-        raise HTTPException(status_code=422, detail="is_completed を指定してください")
-
-    updated = await memo_crud.patch_memo(db, memo_id, {"is_completed": is_completed})
+    updated = await memo_crud.patch_memo(db, memo_id, {"is_completed": body.is_completed})
     if not updated:
         raise HTTPException(status_code=404, detail="対象メモが見つかりません")
 

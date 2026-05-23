@@ -1,3 +1,6 @@
+# 環境変数
+.env
+
 # Python
 __pycache__/
 *.pyc
@@ -26,5 +29,5 @@ awscliv2*
 *.log
 
 # VSCode
-.vscode/task-definition.json
+.vscode/
 trust-policy.json
