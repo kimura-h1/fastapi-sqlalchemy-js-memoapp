@@ -1,17 +1,30 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { isLoggedIn } from "./utils/auth";
 import CreateMemo from "./CreateMemo";
 import ListMemos from "./ListMemos";
-import EditMemo from "./EditMemo"; 
+import EditMemo from "./EditMemo";
+import Login from "./Login";
+import Register from "./Register";
+
+function PrivateRoute({ children }) {
+  return isLoggedIn() ? children : <Navigate to="/login" replace />;
+}
+
+function PublicOnlyRoute({ children }) {
+  return isLoggedIn() ? <Navigate to="/list" replace /> : children;
+}
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/login" element={<PublicOnlyRoute><Login /></PublicOnlyRoute>} />
+        <Route path="/register" element={<PublicOnlyRoute><Register /></PublicOnlyRoute>} />
         <Route path="/" element={<Navigate to="/list" replace />} />
-        <Route path="/list" element={<ListMemos />} />
-        <Route path="/create" element={<CreateMemo />} />
-        <Route path="/memos/:id/edit" element={<EditMemo />} />
-         <Route path="*" element={<Navigate to="/list" replace />} />
+        <Route path="/list" element={<PrivateRoute><ListMemos /></PrivateRoute>} />
+        <Route path="/create" element={<PrivateRoute><CreateMemo /></PrivateRoute>} />
+        <Route path="/memos/:id/edit" element={<PrivateRoute><EditMemo /></PrivateRoute>} />
+        <Route path="*" element={<Navigate to="/list" replace />} />
       </Routes>
     </BrowserRouter>
   );

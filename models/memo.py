@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from db import Base
 from datetime import datetime
 
@@ -18,6 +18,7 @@ class Memo(Base):
     __table_args__ = {"schema": "app"}
     # メモID：PK：自動インクリメント
     memo_id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey("app.users.user_id"), nullable=False)
     # タイトル：未入力不可
     title = Column(String(50), nullable=False)
     # 詳細：未入力可

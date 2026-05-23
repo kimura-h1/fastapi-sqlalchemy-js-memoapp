@@ -7,7 +7,9 @@ from sqlalchemy import text
 
 from db import engine, Base
 from routers.memo import router as memo_router
-import models.memo  # noqa: F401 - モデルを Base に登録するためにインポート
+from routers.auth import router as auth_router
+import models.memo  # noqa: F401
+import models.user  # noqa: F401
 
 
 @asynccontextmanager
@@ -42,6 +44,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth_router)
 app.include_router(memo_router)
 
 
