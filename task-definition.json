@@ -1,0 +1,29 @@
+{
+  "family": "memo-fastapi-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "executionRoleArn": "arn:aws:iam::632752099901:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "memo-fastapi",
+      "image": "632752099901.dkr.ecr.ap-northeast-1.amazonaws.com/memo-fastapi-dev:latest",
+      "portMappings": [
+        {
+          "containerPort": 8000,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/memo-fastapi",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}
