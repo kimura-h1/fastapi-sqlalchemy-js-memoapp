@@ -8,8 +8,10 @@ from sqlalchemy import text
 from db import engine, Base
 from routers.memo import router as memo_router
 from routers.auth import router as auth_router
+from routers.invoice import router as invoice_router
 import models.memo  # noqa: F401
 import models.user  # noqa: F401
+import models.invoice  # noqa: F401
 
 
 @asynccontextmanager
@@ -46,6 +48,7 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(memo_router)
+app.include_router(invoice_router)
 
 
 @app.exception_handler(ValidationError)
